@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {useNavigate } from "react-router-dom";
 import Modal from "react-modal"; // use for dailog box
 
 function Signup() {
     const [modelIsOpen, setModelIsOpen] = useState(false);
     const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
     const [formData, SetFormData] = useState({
         name: "",
@@ -74,6 +76,8 @@ function Signup() {
                 setTimeout(() => {
                     navigate("/login");
                 }, 2000);
+
+
             } else {
                 setMessage("Registartion failed");
                 setModelIsOpen(true);
@@ -118,7 +122,8 @@ function Signup() {
             <form
                 onSubmit={handleSubmit}
                 autoComplete="off"
-                action=""
+                method="POST"
+                action="/api/signup"
                 className="bg-slate-950 text-white px-2 py-2 rounded-md space-y-8 space-x-5"
             >
                 <div className="text-center my-3 font-bold text-xl">
@@ -146,9 +151,10 @@ function Signup() {
                     <label htmlFor="">Email</label>
                     <input
                         type="email"
-                        id="email"
+                        id="email_signup"
                         name="email"
                         onChange={handleChange}
+                        autoComplete="email"
                         placeholder="e.g sneha@gmail.com"
                         className=" pl-2 ml-5 w-96 max-w-full rounded-md py-1 bg-slate-950 ring-1 ring-white focus:shadow-white focus:shadow hover:ring-transparent"
                     />
@@ -163,9 +169,10 @@ function Signup() {
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
-                        id="password"
+                        id="password_signup"
                         name="password"
                         onChange={handleChange}
+                        autoComplete="current-password"
                         placeholder="e.g s#neh!23"
                         className="pl-2 ml-2 w-96 max-w-full rounded-md py-1 bg-slate-950 ring-1 ring-white focus:shadow-white focus:shadow hover:ring-transparent"
                     />
@@ -201,18 +208,13 @@ function Signup() {
             <Modal
                 isOpen={modelIsOpen}
                 onRequestClose={() => setModelIsOpen(false)}
+                appElement={document.getElementById("root")}
                 className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
             >
                 <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full text-center">
                     <h2 className="text-lg font-semibold text-gray-900">
                         {message}
                     </h2>
-                    <button
-                        onClick={() => setModelIsOpen(false)}
-                        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-                    >
-                        Close
-                    </button>
                 </div>
             </Modal>
         </div>

@@ -10,6 +10,7 @@ export default defineConfig({
         }),
     ],
     server: {
+        historyApiFallback: true, // Ensures React Router handles routing
         hmr: {
             host: 'localhost',
         },
