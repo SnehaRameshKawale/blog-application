@@ -46,8 +46,14 @@ function Navbar({authentication,setauthentication}) {
                 </Link> */}
                 {authentication ? (
                     <>
+                        <Link to="/myPosts" className="mx-6">
+                           MyPosts
+                        </Link>
                         <Link to="/posts" className="mx-6">
                             Posts
+                        </Link>
+                        <Link to="/newPosts" className="mx-6">
+                           NewPost
                         </Link>
                         <Link to="/logout" className="mx-6" onClick={logout}>
                             Logout

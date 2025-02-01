@@ -6,6 +6,7 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\BaseController as BaseController;
+use Illuminate\Support\Facades\Auth;
 
 class BlogController extends BaseController
 {
@@ -14,10 +15,11 @@ class BlogController extends BaseController
      */
     public function index()
     {
-        $data['posts'] = Blog::all();
 
-        return $this->sendResponse($data,"All feteched data");
+        $posts = Blog::all();
+        return $this->sendResponse(['posts' => $posts], "All fetched data");
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -34,7 +36,7 @@ class BlogController extends BaseController
         );
 
         if ($validate->fails()) {
-            return $this->sendError("Validation error",$validate->errors()->all(),401);
+            return $this->sendError("Validation error", $validate->errors()->all(), 401);
         }
 
         $img = $request->image;
@@ -48,7 +50,7 @@ class BlogController extends BaseController
             'image' => $image_name,
         ]);
 
-        return $this->sendResponse($post,"Successfully stored new post");
+        return $this->sendResponse($post, "Successfully stored new post");
     }
 
     /**
@@ -64,7 +66,7 @@ class BlogController extends BaseController
         ])->where(['id' => $id])->first();
 
         if ($data != '') {
-            return $this->sendResponse($data,"Data found successfully");
+            return $this->sendResponse($data, "Data found successfully");
         } else {
             return $this->sendError("Data with provided id not found");
         }
@@ -86,7 +88,7 @@ class BlogController extends BaseController
         );
 
         if ($validate->fails()) {
-            return $this->sendError("Validation failed",$validate->errors()->all());
+            return $this->sendError("Validation failed", $validate->errors()->all());
         }
 
         $img = $request->image;
@@ -106,7 +108,7 @@ class BlogController extends BaseController
             $img->move(public_path() . '/uploads', $image_name);
         }
 
-        return $this->sendResponse($post,"Blog updated successfully");
+        return $this->sendResponse($post, "Blog updated successfully");
     }
 
     /**
@@ -129,6 +131,6 @@ class BlogController extends BaseController
 
         $post->delete();
 
-        return $this->sendResponse($post,"Post deleted successfully");
+        return $this->sendResponse($post, "Post deleted successfully");
     }
 }

@@ -37,7 +37,7 @@ function App() {
                     <Route path="/posts" element={<Content />} />
                 </Routes>
             </div>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }
