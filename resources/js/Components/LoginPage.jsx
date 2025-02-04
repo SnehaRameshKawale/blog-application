@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 
-function Login({setauthentication}) {
+function Login({setauthentication,set_auth_user_id}) {
     const [modelIsOpen, setModelIsOpen] = useState(false);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
@@ -41,6 +41,8 @@ function Login({setauthentication}) {
                 { withCredentials: true } // This ensures cookies are sent with the request
             );
             if (response.data.status) {
+                set_auth_user_id(response.data.id);
+                console.log(response.data.id);
                 localStorage.setItem("token", response.data.token); // Store token
 
                 setMessage("Login successfully");

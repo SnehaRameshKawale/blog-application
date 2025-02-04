@@ -52,8 +52,8 @@ function Navbar({authentication,setauthentication}) {
                         <Link to="/posts" className="mx-6">
                             Posts
                         </Link>
-                        <Link to="/newPosts" className="mx-6">
-                           NewPost
+                        <Link to="/createPost" className="mx-6">
+                           CreatePost
                         </Link>
                         <Link to="/logout" className="mx-6" onClick={logout}>
                             Logout

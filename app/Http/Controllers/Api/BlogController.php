@@ -58,18 +58,8 @@ class BlogController extends BaseController
      */
     public function show(string $id)
     {
-        $data['post'] = Blog::select([
-            'id',
-            'title',
-            'description',
-            'image',
-        ])->where(['id' => $id])->first();
-
-        if ($data != '') {
-            return $this->sendResponse($data, "Data found successfully");
-        } else {
-            return $this->sendError("Data with provided id not found");
-        }
+        $posts = Blog::select(['id', 'title', 'description', 'image'])->where(['id'=>$id])->get();
+        return $this->sendResponse(['posts' => $posts], "All fetched data");
 
     }
 
