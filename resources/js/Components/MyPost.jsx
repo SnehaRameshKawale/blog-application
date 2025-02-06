@@ -8,6 +8,7 @@ function MyPost({ auth_user_id }) {
 
     const token = localStorage.getItem("token");
     console.log("Token:", token);
+    console.log(auth_user_id);
 
     useEffect(() => {
         const fetechMyPosts = async () => {

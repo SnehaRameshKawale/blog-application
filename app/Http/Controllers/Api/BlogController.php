@@ -26,12 +26,14 @@ class BlogController extends BaseController
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $validate = Validator::make(
             $request->all(),
             [
                 'title' => 'required',
-                'description' => 'required',
-                'image' => 'required|mimes:png,jpg,jpeg,gif',
+                'des' => 'required',
+                'img' => 'required|mimes:png,jpg,jpeg,gif',
             ]
         );
 
@@ -39,14 +41,15 @@ class BlogController extends BaseController
             return $this->sendError("Validation error", $validate->errors()->all(), 401);
         }
 
-        $img = $request->image;
+        $img = $request->file('img');
         $ext = $img->getClientOriginalExtension();
         $image_name = time() . '.' . $ext;
         $img->move(public_path() . '/uploads', $image_name);
 
         $post = Blog::create([
+            'id' => $user->id,
             'title' => $request->title,
-            'description' => $request->description,
+            'description' => $request->des,
             'image' => $image_name,
         ]);
 
