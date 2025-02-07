@@ -1,14 +1,60 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom";
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDeleteLeft } from '@fortawesome/free-solid-svg-icons';
 
 function MyPost({ auth_user_id }) {
     const [posts, setPosts] = useState([]);
     const [message, setMessage] = useState("");
     const [modelIsOpen, setModelIsOpen] = useState(false);
+    const navigate = useNavigate();
 
     const token = localStorage.getItem("token");
     console.log("Token:", token);
     console.log(auth_user_id);
+
+    const setDeletePost = async (postId) => {
+        try{
+            const response = await fetch(
+                `http://127.0.0.1:8000/api/posts/${postId}`,
+                {
+                    method: "DELETE",
+                    headers:{
+                        Authorization : `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if(data.status){
+                setMessage("post deleted successfully");
+                setModelIsOpen(true);
+
+                setTimeout(() => {
+                    navigate("/posts");
+                }, 2000);
+            }else{
+                setMessage("Error while deleting post");
+                setModelIsOpen(true);
+
+                setTimeout(() => {
+                    navigate("/posts");
+                }, 2000);
+            }
+
+        }catch(e){
+            setMessage("Error : chould not delete post");
+                setModelIsOpen(true);
+
+                setTimeout(() => {
+                    navigate("/posts");
+                }, 2000);
+        }
+    }
 
     useEffect(() => {
         const fetechMyPosts = async () => {
@@ -57,6 +103,7 @@ function MyPost({ auth_user_id }) {
             {posts.length > 0 ? (
                 posts.map((post) => (
                     <div key={post.id} className="bg-slate-950 mx-2 my-2">
+                        <div className="text-end mr-2" onClick={() => setDeletePost(post.id)}><FontAwesomeIcon icon={faDeleteLeft} /></div>
                         <img
                             src={`http://127.0.0.1:8000/uploads/${post.image}`}
                             alt="nature img"
